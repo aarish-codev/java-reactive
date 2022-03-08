@@ -1,5 +1,6 @@
 package com.reactive.mono;
 
+import com.reactive.util.Commons;
 import reactor.core.publisher.Mono;
 
 public class MonoDemo {
@@ -33,6 +34,14 @@ public class MonoDemo {
                 item-> System.out.println("Received : "+item),
                 System.out::println,
                 ()-> System.out.println("Completed" )
+        );
+        System.out.println("-------------------------------------------");
+
+        // refactoring
+        integerMono.subscribe(
+                Commons.onNext(),
+                Commons.onError(),
+                Commons.onComplete()
         );
     }
 }
