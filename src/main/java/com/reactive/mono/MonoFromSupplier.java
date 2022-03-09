@@ -18,10 +18,27 @@ public class MonoFromSupplier {
                 Commons.onError(),
                 Commons.onComplete()
         );
+
+        System.out.println("------------------------------------");
+        getNameV2();
+        getNameV2().subscribe(Commons.onNext());
+
     }
 
     public static String getName(){
         System.out.println("Generating name....");
         return Commons.faker().name().fullName();
+    }
+
+    private static Mono<String> getNameV2(){
+        System.out.println("entered getName()");
+        return Mono.fromSupplier(
+                ()-> {
+                    System.out.println("Generating name...");
+                    Commons.sleepSeconds(3);
+                    return Commons.faker().name().fullName();
+                }
+
+        ).map(String::toUpperCase);
     }
 }
