@@ -2,6 +2,7 @@ package com.reactive.mono;
 
 import com.reactive.util.Commons;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 public class MonoFromSupplier {
 
@@ -19,10 +20,15 @@ public class MonoFromSupplier {
                 Commons.onComplete()
         );
 
-        System.out.println("------------------------------------");
+        System.out.println("getNameV2 1------------------------------------");
         getNameV2();
+        System.out.println("getNameV2 2------------------------------------");
         getNameV2().subscribe(Commons.onNext());
-
+        System.out.println("getNameV2 3------------------------------------");
+        String name = getNameV2()
+                .subscribeOn(Schedulers.boundedElastic())
+                .block();
+        System.out.println(name);
     }
 
     public static String getName(){
