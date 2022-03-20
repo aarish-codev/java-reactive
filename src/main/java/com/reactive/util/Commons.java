@@ -1,6 +1,7 @@
 package com.reactive.util;
 
 import com.github.javafaker.Faker;
+import org.reactivestreams.Subscriber;
 
 import java.util.function.Consumer;
 
@@ -30,5 +31,17 @@ public class Commons {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Subscriber<Object> subscriber(){
+        return new DefaultSubscriber();
+    }
+
+    public static Subscriber<Object> subscriber(String name){
+        return new DefaultSubscriber(name);
+    }
+
+    public static void seperator(){
+        System.out.println("\n----------------------------------------\n");
     }
 }
