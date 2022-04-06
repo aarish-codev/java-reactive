@@ -15,15 +15,30 @@ public class HotPublisherDemo {
                 .share();
 
         movieStream.subscribe(Commons.subscriber("sam"));
-
+        Commons.sleepSeconds(5);
+        movieStream.subscribe(Commons.subscriber("mike"));
         Commons.sleepSeconds(5);
 
-        movieStream.subscribe(Commons.subscriber("mike"));
+        Commons.sleepSeconds(30);
+        Commons.seperator();
+        // won't start publishing anything until there are at least 3 subscribers
+        anotherMovieStream();
 
 
+    }
+
+    private static void anotherMovieStream() {
+        Flux<String> movieStreamRef = Flux
+                .fromStream(HotPublisherDemo::getMovie)
+                .delayElements(Duration.ofSeconds(2))
+//                .share() = publish() + refCount(1)
+                .publish()
+                .refCount(3);
+
+        movieStreamRef.subscribe(Commons.subscriber("sam"));
+        Commons.sleepSeconds(5);
+        movieStreamRef.subscribe(Commons.subscriber("mike"));
         Commons.sleepSeconds(60);
-
-
     }
 
     private static Stream<String> getMovie() {
